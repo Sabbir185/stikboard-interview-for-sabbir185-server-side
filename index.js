@@ -15,6 +15,7 @@ const client = new MongoClient(uri, { useNewUrlParser: true, useUnifiedTopology:
 client.connect(err => {
     const collectionSignUp = client.db(`${process.env.DB_NAME}`).collection(`${process.env.DB_SIGNUP}`);
 
+    // insert data
     app.post('/signUpInfo', (req, res) => {
         const info = req.body;
         console.log(info)
@@ -25,7 +26,15 @@ client.connect(err => {
             })
     })
 
-    
+    // fetch data
+    app.get('/login', (req, res) => {
+        console.log(req.query.email)
+        collectionSignUp.find({ email: req.query.email })
+            .toArray((err, document) => {
+                res.send(document)
+                console.log(document)
+            })
+    })
 
 });
 
